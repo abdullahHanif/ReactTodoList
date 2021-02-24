@@ -16,15 +16,11 @@ function Todo() {
 
     const submitUpdate = event => {
         event.preventDefault()
-        dispatch(editTodo(edit))
         setEdit = ""
     }
 
-
-
-
-if (edit.id) {
-    return <TodoForm edit={edit} onSumbit={submitUpdate.bind(this)} target="#" />
+if (edit !== "") {
+    return <TodoForm edit={edit} onSumbit={submitUpdate} />
 }
 
 

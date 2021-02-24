@@ -15,28 +15,23 @@ const todoSlice = createSlice({
                 return
             }
 
-            
             state.todos.push(new Todo(uuidv4(), action.payload, false))
             console.log(...state.todos)
         },
 
         deleteTodo: (state, action) => {
-            //state.todos.splice(action.payload, action.payload)
-            
             state.todos = state.todos.filter(todo => todo.id !== action.payload)
             console.log("deleted"+ action.payload)
         },
 
         editTodo: (state, action) => {
-            state.todos = state.todos.map(todo => ((todo.id === action.payload.id) ? new Todo(action.payload.id, action.payload.title, action.payload.isComplete) : todo))
+            state.todos = state.todos.map(todo => ((todo.id === action.payload.id) ? action.payload : todo))
             console.log(...state.todos)
         },
 
         toggleComplete: (state, action) => {
             state.todos =  state.todos.map(todo => ((todo.id === action.payload.id) ? new Todo(action.payload.id, action.payload.title, !action.payload.isComplete) : todo))
             console.log(...state.todos)
-            // state.todos[action.payload].isComplete = !state.todos[action.payload].isComplete;
-            //state.todos[state.todos.indexOf(action.payload)].isComplete =  !state.todos[state.todos.indexOf(action.payload)].isComplete
         }
 
     }

@@ -1,39 +1,69 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux';
-import { addTodo } from '../store/todoAppSlice';
+import { addTodo, editTodo } from '../store/todoAppSlice';
 
-function TodoForm() {
-    const [value, setValue] = useState("");
+function TodoForm(props) {
+    const [value, setValue] = useState(props && props.edit ? props.edit.title : "");
     const inputRef = useRef(null)
     const dispatch = useDispatch();
 
-    useEffect(() => { 
+    useEffect(() => {
         inputRef.current.focus()
     })
 
-    const handleSubmit = event => {
-        event.preventDefault();
+    const handleSubmit = e => {
+        e.preventDefault();
 
-        dispatch(addTodo(value));
+        if (props && props.edit) {
+            props.edit.title = value;
+            dispatch(editTodo(props.edit));
+        } else {
+            dispatch(addTodo(value));
+        }
 
-        setValue("");
+        setValue("")
     }
 
     return (
-        <form className="todo-form" onSubmit={handleSubmit.bind(this)} target="#">
-            <input
-                name='text'
-                className="todo-input"
-                type="text" placeholder="Add a Todo"
-                value={value}
-                ref = {inputRef}
-                onChange={(e) => {
-                    setValue(e.target.value);
-                }} />
+        <form onSubmit={handleSubmit} className='todo-form'>
+            {props.edit ? (
+                <>
+                    <input
+                        placeholder='Update your item'
+                        value={value}
+                        onChange={
+                            (e) => {
+                                setValue(e.target.value);
+                            }
+                        }
+                        name='text'
+                        ref={inputRef}
+                        className='todo-input edit'
+                    />
+                    <button onClick={handleSubmit} className='todo-button edit'>
+                        Update
+                  </button>
+                </>
+            ) : (
+                    <>
+                        <input
+                            placeholder='Add a todo'
+                            value={value}
+                            onChange={(e) => {
+                                setValue(e.target.value);
+                            }}
+                            name='text'
+                            className='todo-input'
+                            ref={inputRef}
+                        />
+                        <button onClick={handleSubmit} className='todo-button'>
+                            Add todo
+                  </button>
+                    </>
+                )}
+        </form>
+    );
 
-            <button className="todo-button" type='submit'>Add</button>
-        </form >
-    )
 }
 
 export default TodoForm;
