@@ -28,11 +28,15 @@ const todoSlice = createSlice({
         },
 
         editTodo: (state, action) => {
-            state.todos.map(todo => ((todo.id === action.payload.id) ? new Todo(action.payload.id, action.payload.title, action.payload.isComplete) : todo))
+            state.todos = state.todos.map(todo => ((todo.id === action.payload.id) ? new Todo(action.payload.id, action.payload.title, action.payload.isComplete) : todo))
+            console.log(...state.todos)
         },
 
         toggleComplete: (state, action) => {
-            state.todos[action.payload].isComplete = !state.todos[action.payload].isComplete;
+            state.todos =  state.todos.map(todo => ((todo.id === action.payload.id) ? new Todo(action.payload.id, action.payload.title, !action.payload.isComplete) : todo))
+            console.log(...state.todos)
+            // state.todos[action.payload].isComplete = !state.todos[action.payload].isComplete;
+            //state.todos[state.todos.indexOf(action.payload)].isComplete =  !state.todos[state.todos.indexOf(action.payload)].isComplete
         }
 
     }
