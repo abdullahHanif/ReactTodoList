@@ -5,5 +5,4 @@ export default class Todo {
     this.title = title;
     this.isComplete = isComplete;
   }
-
 }
